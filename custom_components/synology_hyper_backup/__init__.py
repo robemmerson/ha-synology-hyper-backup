@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import socket
 from typing import TYPE_CHECKING
 from functools import partial
 
@@ -50,6 +51,8 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
                 password=dsm_entry.data.get("password"),
                 secure=dsm_entry.data.get("ssl", True),
                 cert_verify=dsm_entry.data.get("verify_ssl", True),
+                device_id=dsm_entry.data.get("device_token"),
+                device_name=socket.gethostname(),
                 dsm_version=7,
             )
         )
@@ -57,7 +60,8 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         coordinator = SynologyTasksCoordinator(hass, synology_backup)
         await coordinator.async_config_entry_first_refresh()
     except Exception as err:
-        raise ConfigEntryNotReady from err
+        LOGGER.debug("Setup failed for %s", entry.title, exc_info=True)
+        raise ConfigEntryNotReady(str(err)) from err
 
     hass.data[DOMAIN][entry.entry_id] = {
         CONF_COORDINATOR: coordinator,
