@@ -1,7 +1,7 @@
 """Constants for the Synology Tasks integration."""
 
-from typing import Final
 import logging
+from typing import Final
 
 DOMAIN: Final = "synology_hyper_backup"
 PLATFORMS: Final = ["sensor"]

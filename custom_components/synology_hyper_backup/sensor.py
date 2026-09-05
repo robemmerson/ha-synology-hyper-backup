@@ -1,10 +1,11 @@
 """Support for Synology DSM Task sensors."""
 
 from __future__ import annotations
+
 from typing import TYPE_CHECKING
 
-from homeassistant.const import PERCENTAGE, STATE_UNKNOWN
 from homeassistant.components.sensor import SensorEntity
+from homeassistant.const import STATE_UNKNOWN
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
@@ -100,7 +101,7 @@ class SynologyTaskSensor(CoordinatorEntity[SynologyTasksCoordinator], SensorEnti
             return None
         if isinstance(value, str) and value.lower() == "unknown":
             return None
-        if isinstance(value, (dict, list)):
+        if isinstance(value, dict | list):
             # Keep state simple; detailed payload goes to attributes
             return STATE_UNKNOWN
         return value
@@ -135,7 +136,7 @@ class SynologyTaskSensor(CoordinatorEntity[SynologyTasksCoordinator], SensorEnti
         """Check if a value is numeric or a numeric string."""
         if isinstance(value, bool):
             return False
-        if isinstance(value, (int, float)):
+        if isinstance(value, int | float):
             return True
         if isinstance(value, str):
             try:
@@ -150,7 +151,7 @@ class SynologyTaskSensor(CoordinatorEntity[SynologyTasksCoordinator], SensorEnti
         """Convert a value to int or float if possible."""
         if isinstance(value, bool) or value is None:
             return None
-        if isinstance(value, (int, float)):
+        if isinstance(value, int | float):
             return value
         if isinstance(value, str):
             try:

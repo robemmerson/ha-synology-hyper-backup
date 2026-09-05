@@ -3,8 +3,8 @@
 from __future__ import annotations
 
 import socket
-from typing import TYPE_CHECKING
 from functools import partial
+from typing import TYPE_CHECKING
 
 from homeassistant.components.synology_dsm.const import DOMAIN as SYNOLOGY_DOMAIN
 from homeassistant.exceptions import ConfigEntryNotReady
