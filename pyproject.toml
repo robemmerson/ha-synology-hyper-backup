@@ -1,0 +1,45 @@
+[tool.ruff]
+target-version = "py313"
+line-length = 88
+extend-exclude = [
+  ".remember",
+]
+
+[tool.ruff.lint]
+select = [
+  "E",    # pycodestyle errors
+  "W",    # pycodestyle warnings
+  "F",    # pyflakes
+  "I",    # isort
+  "UP",   # pyupgrade
+  "B",    # flake8-bugbear
+  "SIM",  # flake8-simplify
+  "RUF",  # ruff-specific
+]
+ignore = [
+  "E501",   # line length handled by formatter
+  "B008",   # function calls in defaults (used by voluptuous schemas)
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["custom_components.synology_hyper_backup"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "lf"
+
+[tool.bandit]
+exclude_dirs = [".remember"]
+skips = [
+  "B101",  # assert_used — not a concern in integration code
+  # B105 fires on any string literal whose variable name contains "token" /
+  # "password". In this integration those literals are Home Assistant
+  # config-entry keys read off the synology_dsm entry (e.g. "device_token",
+  # "password") — not hardcoded secrets.
+  "B105",
+  # B112 try_except_continue fires on the log-parsing loop in utils.py, which
+  # deliberately skips entries whose timestamp will not parse rather than
+  # failing the whole sensor update.
+  "B112",
+]
