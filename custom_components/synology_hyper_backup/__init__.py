@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import socket
 from typing import TYPE_CHECKING
 from functools import partial
 
@@ -50,6 +51,8 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
                 password=dsm_entry.data.get("password"),
                 secure=dsm_entry.data.get("ssl", True),
                 cert_verify=dsm_entry.data.get("verify_ssl", True),
+                device_id=dsm_entry.data.get("device_token"),
+                device_name=socket.gethostname(),
                 dsm_version=7,
             )
         )
