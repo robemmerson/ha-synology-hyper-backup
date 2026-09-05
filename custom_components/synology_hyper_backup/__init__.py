@@ -60,7 +60,8 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         coordinator = SynologyTasksCoordinator(hass, synology_backup)
         await coordinator.async_config_entry_first_refresh()
     except Exception as err:
-        raise ConfigEntryNotReady from err
+        LOGGER.debug("Setup failed for %s", entry.title, exc_info=True)
+        raise ConfigEntryNotReady(str(err)) from err
 
     hass.data[DOMAIN][entry.entry_id] = {
         CONF_COORDINATOR: coordinator,
